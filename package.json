@@ -2,7 +2,7 @@
   "name": "miraigent-codex-usage-dashboard",
   "version": "0.1.4",
   "private": false,
-  "description": "Codexの使用量・リセット時刻・認証状態を1アカウントから確認できるローカルWebダッシュボード / Local Codex usage dashboard.",
+  "description": "Codexの残量を1アカウントでも複数アカウントでも同じ画面で確認できるローカルWebダッシュボード / Local Codex usage dashboard for one or multiple accounts.",
   "type": "commonjs",
   "bin": {
     "codex-usage-dashboard": "bin/codex-usage-dashboard"
