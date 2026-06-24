@@ -1,8 +1,8 @@
 {
   "name": "miraigent-codex-usage-dashboard",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
-  "description": "Codexの残量を1アカウントでも複数アカウントでも同じ画面で確認できるローカルWebダッシュボード / Local Codex usage dashboard for one or multiple accounts.",
+  "description": "Codexの使用量を毎回探さずに、1アカウントでも複数アカウントでも残量・5時間制限・週次上限・リセット時刻を一覧で確認できるローカルWebダッシュボード / Local dashboard for Codex usage across one or multiple accounts.",
   "type": "commonjs",
   "bin": {
     "codex-usage-dashboard": "bin/codex-usage-dashboard"

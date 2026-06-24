@@ -1,15 +1,17 @@
 # Codex Usage Dashboard
 
-Codexの残量が分からない不安を、1アカウントでも複数アカウントでも同じ画面で見えるようにします。
+Codexの使用量、毎回「あとどれくらい使えるんだっけ？」となる人向けに、1アカウントでも複数アカウントでもまとめて見られるダッシュボードを作りました。
 
-Codexの使用量、リセット時刻、認証状態をまとめて確認できるローカルWebダッシュボードです。1つのCodexアカウントだけで使い始められ、必要になったら2つ目、3つ目のアカウントも同じ画面に追加できます。
+5時間制限・週次上限・リセット時刻・残り%を一覧で確認できます。
 
-See your Codex usage before you hit the limit, whether you use one account or multiple accounts.
+1つのCodexアカウントだけでも使えます。複数アカウントでCodexを使っている場合は、どのアカウントがまだ使えるかを同じ画面で確認できます。
 
-This is a local web dashboard for checking Codex usage, reset times, and authentication state. Start with a single Codex account, then add more accounts to the same dashboard when you need them.
+For anyone who keeps asking, "How much Codex usage do I have left?"
+
+Codex Usage Dashboard is a local web dashboard for checking remaining usage, 5-hour limits, weekly limits, reset times, and authentication state across one or multiple Codex accounts.
 
 <img width="2314" height="1536" alt="Codex_Usage_Dashboard" src="https://github.com/user-attachments/assets/7fcd363a-bc86-4d45-a52c-772e9a83627b" />
-※画面は2アカウント連携した状態のもの
+※画面は複数アカウント連携時の例です。1アカウントだけでも使えます。
 
 OpenAI公式ツールではありません。OpenAIによる制作、提携、推奨、サポートを受けたものではありません。
 
