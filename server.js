@@ -359,17 +359,33 @@ async function usage() {
     };
   }
 
+  const configured = config.accounts.map((account, index) => ({
+    ...account,
+    id: account.id || "account-" + (index + 1),
+  }));
+
+  if (!configured.length) {
+    return {
+      ok: false,
+      error: "アカウントが未設定です。config.json の accounts に1件以上追加してください。 / No accounts configured. Add at least one entry to accounts in config.json.",
+      refreshSeconds: config.refreshSeconds,
+      fetchedAt: new Date().toISOString(),
+      accounts: [],
+    };
+  }
+
   const accounts = await Promise.all(
-    config.accounts.map((account, index) =>
+    configured.map((account) =>
       requestCodex({
         ...account,
-        id: account.id || "account-" + (index + 1),
       }),
     ),
   );
+  const successfulAccounts = accounts.filter((account) => account.ok).length;
 
   return {
-    ok: accounts.every((account) => account.ok),
+    ok: successfulAccounts > 0,
+    partialFailure: successfulAccounts > 0 && successfulAccounts < accounts.length,
     refreshSeconds: config.refreshSeconds,
     fetchedAt: new Date().toISOString(),
     accounts,

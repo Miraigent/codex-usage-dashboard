@@ -128,6 +128,8 @@ async function load() {
     const data = await response.json();
     if (!data.ok && data.error) {
       statusEl.textContent = data.error;
+    } else if (data.partialFailure) {
+      statusEl.textContent = "一部アカウントは未認証です。取得できたアカウントだけ表示しています。 / Some accounts need login. Showing available accounts. 最終更新 / Last updated: " + fmtDate(data.fetchedAt);
     } else {
       statusEl.textContent = "最終更新 / Last updated: " + fmtDate(data.fetchedAt);
     }

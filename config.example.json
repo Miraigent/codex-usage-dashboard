@@ -5,15 +5,9 @@
   "accounts": [
     {
       "id": "codex-1",
-      "label": "Codexアカウント1 / Codex Account 1",
+      "label": "Codex Account",
       "codexCommand": "codex",
       "codexHome": "/absolute/path/to/.codex-accounts/codex-1"
-    },
-    {
-      "id": "codex-2",
-      "label": "Codexアカウント2 / Codex Account 2",
-      "codexCommand": "codex",
-      "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
     }
   ]
 }

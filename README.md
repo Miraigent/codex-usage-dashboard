@@ -42,9 +42,9 @@ GitHubからcloneして使う場合はこちらです。
 
 ### 設定方法
 
-設定ファイルを作成します。1アカウントでも、2アカウントでも、3アカウント以上でも使えます。
+設定ファイルを作成します。標準は1アカウントです。必要な場合だけ2アカウント以上を追加できます。
 
-    mkdir -p ~/.codex-accounts/codex-1 ~/.codex-accounts/codex-2
+    mkdir -p ~/.codex-accounts/codex-1
     cp config.example.json config.json
 
 `config.json` を編集します。
@@ -56,15 +56,9 @@ GitHubからcloneして使う場合はこちらです。
       "accounts": [
         {
           "id": "codex-1",
-          "label": "Codexアカウント1 / Codex Account 1",
+          "label": "Codex Account",
           "codexCommand": "codex",
           "codexHome": "/absolute/path/to/.codex-accounts/codex-1"
-        },
-        {
-          "id": "codex-2",
-          "label": "Codexアカウント2 / Codex Account 2",
-          "codexCommand": "codex",
-          "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
         }
       ]
     }
@@ -75,18 +69,16 @@ GitHubからcloneして使う場合はこちらです。
 
 ### アカウントを追加する方法
 
-1アカウントだけで使う場合は、`accounts` 配列に1つだけ残します。
-
-3アカウント以上で使う場合は、`accounts` 配列に同じ形式で追加します。
+2アカウント以上で使う場合は、`accounts` 配列に同じ形式で追加します。
 
     {
-      "id": "codex-3",
-      "label": "Codexアカウント3 / Codex Account 3",
+      "id": "codex-2",
+      "label": "Codex Account 2",
       "codexCommand": "codex",
-      "codexHome": "/absolute/path/to/.codex-accounts/codex-3"
+      "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
     }
 
-`id` は重複しない名前にしてください。画面上の表示名は `label` で変更できます。
+`id` は重複しない名前にしてください。画面上の表示名は `label` で変更できます。複数アカウントのうち一部が未ログインでも、ログイン済みのアカウントは表示されます。
 
 ### ログイン方法
 
@@ -95,6 +87,9 @@ GitHubからcloneして使う場合はこちらです。
 手動でログインする場合は、アカウントごとの `CODEX_HOME` を指定して実行します。
 
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-1 codex login --device-auth
+
+2アカウント目を追加した場合だけ、追加した `CODEX_HOME` でもログインします。
+
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-2 codex login --device-auth
 
 ### 起動方法
@@ -176,9 +171,9 @@ Or run from a cloned repository.
 
 ### Configure
 
-Create a config file. You can use one account, two accounts, or any number of accounts.
+Create a config file. The default setup uses one account. Add more accounts only when needed.
 
-    mkdir -p ~/.codex-accounts/codex-1 ~/.codex-accounts/codex-2
+    mkdir -p ~/.codex-accounts/codex-1
     cp config.example.json config.json
 
 Edit `config.json`.
@@ -190,15 +185,9 @@ Edit `config.json`.
       "accounts": [
         {
           "id": "codex-1",
-          "label": "Codex Account 1",
+          "label": "Codex Account",
           "codexCommand": "codex",
           "codexHome": "/absolute/path/to/.codex-accounts/codex-1"
-        },
-        {
-          "id": "codex-2",
-          "label": "Codex Account 2",
-          "codexCommand": "codex",
-          "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
         }
       ]
     }
@@ -209,24 +198,25 @@ You can also point to a config file explicitly.
 
 ### Add More Accounts
 
-For a single-account setup, keep only one object in the `accounts` array.
-
-For three or more accounts, add more objects with unique `id` and `codexHome` values.
+For two or more accounts, add more objects with unique `id` and `codexHome` values.
 
     {
-      "id": "codex-3",
-      "label": "Codex Account 3",
+      "id": "codex-2",
+      "label": "Codex Account 2",
       "codexCommand": "codex",
-      "codexHome": "/absolute/path/to/.codex-accounts/codex-3"
+      "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
     }
 
-`id` must be unique. `label` controls the display name shown in the dashboard.
+`id` must be unique. `label` controls the display name shown in the dashboard. If some configured accounts are not logged in, the dashboard still shows any accounts that can be fetched.
 
 ### Login
 
 Use the dashboard's re-login panel, or run Codex login manually for each profile.
 
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-1 codex login --device-auth
+
+Only run this for a second profile if you added one.
+
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-2 codex login --device-auth
 
 ### Run
@@ -273,4 +263,3 @@ The re-login helper logs out only the selected `CODEX_HOME` profile before gener
 - Never paste ChatGPT/Codex tokens into this app.
 - Do not commit `auth.json` or any `CODEX_HOME` directory.
 - If you expose this dashboard outside localhost, protect it with Basic auth, a VPN, or a trusted reverse proxy.
-

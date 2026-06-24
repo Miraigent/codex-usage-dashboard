@@ -6,7 +6,7 @@ if [ "$#" -gt 0 ]; then
 elif [ -n "${CODEX_USAGE_ACCOUNTS:-}" ]; then
   read -r -a accounts <<< "$CODEX_USAGE_ACCOUNTS"
 else
-  accounts=(codex-1 codex-2)
+  accounts=(codex-1)
 fi
 
 for account in "${accounts[@]}"; do
