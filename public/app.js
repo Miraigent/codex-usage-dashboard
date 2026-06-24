@@ -8,9 +8,9 @@ let refreshTimer = null;
 let renderedLoginAccounts = "";
 
 function fmtDate(value) {
-  if (!value) return "未開始または不明";
+  if (!value) return "未開始または不明 / Not started or unknown";
   const ms = typeof value === "number" ? value * 1000 : Date.parse(value);
-  if (!Number.isFinite(ms)) return "不明";
+  if (!Number.isFinite(ms)) return "不明 / Unknown";
   return new Intl.DateTimeFormat("ja-JP", {
     month: "2-digit",
     day: "2-digit",
@@ -20,18 +20,18 @@ function fmtDate(value) {
 }
 
 function fmtUntil(value) {
-  if (!value) return "不明";
+  if (!value) return "不明 / Unknown";
   const ms = typeof value === "number" ? value * 1000 : Date.parse(value);
-  if (!Number.isFinite(ms)) return "不明";
+  if (!Number.isFinite(ms)) return "不明 / Unknown";
   const remainingMs = ms - Date.now();
-  if (remainingMs <= 0) return "まもなく更新";
+  if (remainingMs <= 0) return "まもなく更新 / Updating soon";
   const totalMinutes = Math.ceil(remainingMs / 60000);
   const days = Math.floor(totalMinutes / 1440);
   const hours = Math.floor((totalMinutes % 1440) / 60);
   const minutes = totalMinutes % 60;
-  if (days > 0) return "あと" + days + "日" + hours + "時間";
-  if (hours > 0) return "あと" + hours + "時間" + minutes + "分";
-  return "あと" + minutes + "分";
+  if (days > 0) return "あと" + days + "日" + hours + "時間 / " + days + "d " + hours + "h left";
+  if (hours > 0) return "あと" + hours + "時間" + minutes + "分 / " + hours + "h " + minutes + "m left";
+  return "あと" + minutes + "分 / " + minutes + "m left";
 }
 
 function pct(value) {
@@ -40,9 +40,9 @@ function pct(value) {
 
 function windowName(window, fallback) {
   if (!window?.windowDurationMins) return fallback;
-  if (window.windowDurationMins === 300) return "5時間の使用制限";
-  if (window.windowDurationMins === 10080) return "週間利用上限";
-  return window.windowDurationMins + "分の使用制限";
+  if (window.windowDurationMins === 300) return "5時間の使用制限 / 5-hour limit";
+  if (window.windowDurationMins === 10080) return "週間利用上限 / Weekly limit";
+  return window.windowDurationMins + "分の使用制限 / " + window.windowDurationMins + "-minute limit";
 }
 
 function limitView(title, window) {
@@ -52,12 +52,12 @@ function limitView(title, window) {
   const cls = remaining <= 5 ? "bad" : remaining <= 15 ? "warn" : "";
   return [
     '<div class="limit">',
-    '<div class="limit-title"><span>' + escapeHtml(title) + '</span><span>' + remaining + '% 残り</span></div>',
+    '<div class="limit-title"><span>' + escapeHtml(title) + '</span><span>' + remaining + '% 残り / remaining</span></div>',
     '<div class="bar"><span class="' + cls + '" style="width:' + Math.max(0, Math.min(100, remaining)) + '%"></span></div>',
     '<div class="details">',
-    '<span>使用済み</span><span>' + used + '%</span>',
-    '<span>リセット</span><span>' + escapeHtml(fmtDate(window.resetsAt)) + '</span>',
-    '<span>解除まで</span><span>' + escapeHtml(fmtUntil(window.resetsAt)) + '</span>',
+    '<span>使用済み / Used</span><span>' + used + '%</span>',
+    '<span>リセット / Reset</span><span>' + escapeHtml(fmtDate(window.resetsAt)) + '</span>',
+    '<span>解除まで / Time left</span><span>' + escapeHtml(fmtUntil(window.resetsAt)) + '</span>',
     '</div>',
     '</div>',
   ].join("");
@@ -68,24 +68,24 @@ function accountView(account) {
     return [
       '<article class="card error-card">',
       '<h2>' + escapeHtml(account.label || account.id) + '</h2>',
-      '<p class="meta">取得失敗 / 再ログインが必要です</p>',
-      '<p class="error">' + escapeHtml(account.error || "不明なエラー") + '</p>',
+      '<p class="meta">取得失敗 / 再ログインが必要です / Failed to fetch / Re-login may be required</p>',
+      '<p class="error">' + escapeHtml(account.error || "不明なエラー / Unknown error") + '</p>',
       '</article>',
     ].join("");
   }
 
   const limit = account.rateLimits || {};
-  const plan = account.account?.planType || limit.planType || "プラン不明";
+  const plan = account.account?.planType || limit.planType || "プラン不明 / Plan unknown";
   const credits = limit.credits
-    ? '<p class="credits">クレジット: ' + escapeHtml(String(limit.credits.balance ?? "0")) + (limit.credits.unlimited ? " / 無制限" : "") + "</p>"
+    ? '<p class="credits">クレジット / Credits: ' + escapeHtml(String(limit.credits.balance ?? "0")) + (limit.credits.unlimited ? " / 無制限 / unlimited" : "") + "</p>"
     : "";
 
   return [
     '<article class="card">',
     '<h2>' + escapeHtml(account.label || account.id) + '</h2>',
-    '<p class="meta">' + escapeHtml(plan) + ' / ' + (account.account?.hasEmail ? "アカウント接続済み" : "メール非表示") + '</p>',
-    limitView(windowName(limit.primary, "5時間の使用制限"), limit.primary),
-    limitView(windowName(limit.secondary, "週間利用上限"), limit.secondary),
+    '<p class="meta">' + escapeHtml(plan) + ' / ' + (account.account?.hasEmail ? "アカウント接続済み / account connected" : "メール非表示 / email hidden") + '</p>',
+    limitView(windowName(limit.primary, "5時間の使用制限 / 5-hour limit"), limit.primary),
+    limitView(windowName(limit.secondary, "週間利用上限 / Weekly limit"), limit.secondary),
     credits,
     '</article>',
   ].join("");
@@ -96,7 +96,7 @@ function renderLoginActions(accounts) {
   if (key === renderedLoginAccounts) return;
   renderedLoginAccounts = key;
   if (!accounts.length) {
-    loginActionsEl.innerHTML = '<span class="meta">アカウントが未設定です。</span>';
+    loginActionsEl.innerHTML = '<span class="meta">アカウントが未設定です。 / No accounts configured.</span>';
     return;
   }
   loginActionsEl.innerHTML = accounts
@@ -122,23 +122,23 @@ function escapeHtml(value) {
 
 async function load() {
   refreshEl.disabled = true;
-  statusEl.textContent = "更新中...";
+  statusEl.textContent = "更新中... / Refreshing...";
   try {
     const response = await fetch("api/usage", { cache: "no-store" });
     const data = await response.json();
     if (!data.ok && data.error) {
       statusEl.textContent = data.error;
     } else {
-      statusEl.textContent = "最終更新: " + fmtDate(data.fetchedAt);
+      statusEl.textContent = "最終更新 / Last updated: " + fmtDate(data.fetchedAt);
     }
     const accounts = data.accounts || [];
     renderLoginActions(accounts);
-    accountsEl.innerHTML = accounts.map(accountView).join("") || '<p class="status">アカウントが未設定です。</p>';
+    accountsEl.innerHTML = accounts.map(accountView).join("") || '<p class="status">アカウントが未設定です。 / No accounts configured.</p>';
     if (refreshTimer) clearTimeout(refreshTimer);
     const seconds = Math.max(30, data.refreshSeconds || 60);
     refreshTimer = setTimeout(load, seconds * 1000);
   } catch (error) {
-    statusEl.textContent = "取得失敗: " + error.message;
+    statusEl.textContent = "取得失敗 / Failed to fetch: " + error.message;
   } finally {
     refreshEl.disabled = false;
   }
@@ -154,29 +154,29 @@ async function loadConfiguredAccounts() {
     const data = await response.json();
     if (data.ok) renderLoginActions(data.accounts || []);
   } catch {
-    loginActionsEl.innerHTML = '<span class="meta">アカウント一覧を取得できませんでした。</span>';
+    loginActionsEl.innerHTML = '<span class="meta">アカウント一覧を取得できませんでした。 / Failed to load accounts.</span>';
   }
 }
 
 async function createLoginCode(account, button) {
   button.disabled = true;
   loginResultEl.hidden = false;
-  loginResultEl.innerHTML = '<p class="meta">ログインコードを発行中です...</p>';
+  loginResultEl.innerHTML = '<p class="meta">ログインコードを発行中です... / Generating login code...</p>';
   try {
     const response = await fetch("api/login-code?account=" + encodeURIComponent(account), { cache: "no-store" });
     const data = await response.json();
     if (!data.ok) {
-      loginResultEl.innerHTML = '<p class="error">' + escapeHtml(data.error || "ログインコードを発行できませんでした") + "</p>";
+      loginResultEl.innerHTML = '<p class="error">' + escapeHtml(data.error || "ログインコードを発行できませんでした / Failed to generate login code") + "</p>";
       return;
     }
     loginResultEl.innerHTML = [
       '<p class="meta">' + escapeHtml(data.label) + ' / ' + escapeHtml(data.generatedAt) + '</p>',
-      '<p><a href="' + escapeHtml(data.url) + '" target="_blank" rel="noreferrer">OpenAI Codexのログインページを開く</a></p>',
+      '<p><a href="' + escapeHtml(data.url) + '" target="_blank" rel="noreferrer">OpenAI Codexのログインページを開く / Open OpenAI Codex login page</a></p>',
       '<p class="login-code-value">' + escapeHtml(data.code) + '</p>',
-      '<p class="meta">このコードを開いたページに入力してください。完了後、「更新」で残量を確認できます。</p>',
+      '<p class="meta">このコードを開いたページに入力してください。完了後、「更新 / Refresh」で残量を確認できます。 / Enter this code on the opened page. After login, click Refresh to check usage.</p>',
     ].join("");
   } catch (error) {
-    loginResultEl.innerHTML = '<p class="error">取得失敗: ' + escapeHtml(error.message) + "</p>";
+    loginResultEl.innerHTML = '<p class="error">取得失敗 / Failed to fetch: ' + escapeHtml(error.message) + "</p>";
   } finally {
     button.disabled = false;
   }

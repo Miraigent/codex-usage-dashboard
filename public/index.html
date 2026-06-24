@@ -3,38 +3,38 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Codex 使用量ダッシュボード</title>
+    <title>Codex 使用量ダッシュボード / Codex Usage Dashboard</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <main>
       <header>
         <div>
-          <p class="eyebrow">Codex 使用量</p>
-          <h1>アカウント残量</h1>
+          <p class="eyebrow">Codex 使用量 / Codex Usage</p>
+          <h1>アカウント残量 / Account Limits</h1>
         </div>
-        <button id="refresh" type="button">更新</button>
+        <button id="refresh" type="button">更新 / Refresh</button>
       </header>
-      <p id="status" class="status">読み込み中...</p>
+      <p id="status" class="status">読み込み中... / Loading...</p>
       <section class="login-panel">
         <div>
-          <p class="eyebrow">Codex ログイン</p>
-          <h2>再ログインコード発行</h2>
-          <p class="meta">認証が切れた時だけ使います。対象アカウントを一度ログアウトして、新しい15分コードを発行します。</p>
+          <p class="eyebrow">Codex ログイン / Codex Login</p>
+          <h2>再ログインコード発行 / Re-login Code</h2>
+          <p class="meta">認証が切れた時だけ使います。対象アカウントを一度ログアウトして、新しい15分コードを発行します。 / Use this only when auth expires. It logs out the selected account profile and creates a new 15-minute code.</p>
         </div>
         <div class="login-actions">
-          <span id="login-actions-status" class="meta">アカウント一覧を読み込み中...</span>
+          <span id="login-actions-status" class="meta">アカウント一覧を読み込み中... / Loading accounts...</span>
         </div>
         <div id="login-result" class="login-result" hidden></div>
       </section>
       <section id="accounts" class="accounts"></section>
       <section class="agent-memories-panel" aria-labelledby="agent-memories-title">
         <div>
-          <p class="eyebrow">次の導線</p>
+          <p class="eyebrow">次の導線 / Next Step</p>
           <h2 id="agent-memories-title">Agent Memories</h2>
-          <p class="meta">Codexの利用量だけでなく、AIエージェントが残した判断・修正・運用メモも再利用できる形にしておくための公開カタログです。</p>
+          <p class="meta">Codexの利用量だけでなく、AIエージェントが残した判断・修正・運用メモも再利用できる形にしておくための公開カタログです。 / Public catalog for turning AI agent decisions, fixes, and operating notes into reusable memory.</p>
         </div>
-        <a class="link-button" href="https://github.com/Miraigent/Miraigent-agent-memories-mcp-catalog" target="_blank" rel="noreferrer">カタログを開く</a>
+        <a class="link-button" href="https://github.com/Miraigent/Miraigent-agent-memories-mcp-catalog" target="_blank" rel="noreferrer">カタログを開く / Open Catalog</a>
       </section>
     </main>
     <script src="app.js"></script>
