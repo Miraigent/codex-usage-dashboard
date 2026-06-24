@@ -1,45 +1,47 @@
 # Codex Usage Dashboard
 
-Local web dashboard for viewing Codex account usage limits across multiple CODEX_HOME profiles.
+Codexの使用量、リセット時刻、認証状態を、1アカウントから複数アカウントまでまとめて確認できるローカルWebダッシュボードです。
 
-This is an unofficial tool. It is not made by, affiliated with, endorsed by, or supported by OpenAI.
+OpenAI公式ツールではありません。OpenAIによる制作、提携、推奨、サポートを受けたものではありません。
 
-## What It Shows
+## できること
 
-- Codex account connection state
-- 5-hour usage window
-- Weekly usage window
-- Reset time
-- Remaining credit balance when returned by Codex
-- Re-login device code helper for each configured account
-- One account or any number of accounts, driven by the accounts array in config.json
+- Codexアカウントの接続状態を確認
+- 5時間枠の使用量と残量を確認
+- 週間枠の使用量と残量を確認
+- 次のリセット時刻を確認
+- Codexから返ってくる場合はクレジット残高を確認
+- 認証が切れたアカウントの再ログインコードを発行
+- 1アカウントでも、2アカウント以上でも利用可能
 
-The dashboard does not print or store ChatGPT/Codex tokens. It starts codex app-server --stdio and calls account/read and account/rateLimits/read.
+このダッシュボードはChatGPT/Codexのトークンを表示・保存しません。内部では `codex app-server --stdio` を起動し、Codex CLIの `account/read` と `account/rateLimits/read` を呼び出します。
 
-## Requirements
+## 必要なもの
 
-- Node.js 20 or newer
-- Python 3 with the standard library pty module
-- OpenAI Codex CLI installed and available as codex
-- A local machine or server where you can log in with Codex
+- Node.js 20以上
+- Python 3（標準ライブラリの `pty` が使える環境）
+- OpenAI Codex CLI（`codex` コマンド）
+- CodexへログインできるローカルPCまたはサーバー
 
-## Install
+## インストール
+
+npmから無料でインストールできます。
 
     npm install -g miraigent-codex-usage-dashboard
 
-Or run from a cloned repository:
+GitHubからcloneして使う場合はこちらです。
 
     npm install
     npm start
 
-## Configure
+## 設定方法
 
-Create a config file. Use one account, two accounts, or any number of accounts:
+設定ファイルを作成します。1アカウントでも、2アカウントでも、3アカウント以上でも使えます。
 
     mkdir -p ~/.codex-accounts/codex-1 ~/.codex-accounts/codex-2
     cp config.example.json config.json
 
-Edit config.json:
+`config.json` を編集します。
 
     {
       "host": "127.0.0.1",
@@ -48,77 +50,91 @@ Edit config.json:
       "accounts": [
         {
           "id": "codex-1",
-          "label": "Codex Account 1",
+          "label": "Codexアカウント1",
           "codexCommand": "codex",
           "codexHome": "/absolute/path/to/.codex-accounts/codex-1"
         },
         {
           "id": "codex-2",
-          "label": "Codex Account 2",
+          "label": "Codexアカウント2",
           "codexCommand": "codex",
           "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
         }
       ]
     }
 
-You can also point to a config file explicitly:
+設定ファイルの場所を明示したい場合は、環境変数で指定できます。
 
     CODEX_USAGE_DASHBOARD_CONFIG=/path/to/config.json codex-usage-dashboard
 
-## Login
+## アカウントを追加する方法
 
-Use the dashboard's re-login panel, or run Codex login manually for each profile:
+1アカウントだけで使う場合は、`accounts` 配列に1つだけ残します。
+
+3アカウント以上で使う場合は、`accounts` 配列に同じ形式で追加します。
+
+    {
+      "id": "codex-3",
+      "label": "Codexアカウント3",
+      "codexCommand": "codex",
+      "codexHome": "/absolute/path/to/.codex-accounts/codex-3"
+    }
+
+`id` は重複しない名前にしてください。画面上の表示名は `label` で変更できます。
+
+## ログイン方法
+
+ダッシュボード上の「再ログインコード発行」からログインできます。
+
+手動でログインする場合は、アカウントごとの `CODEX_HOME` を指定して実行します。
 
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-1 codex login --device-auth
     CODEX_HOME=/absolute/path/to/.codex-accounts/codex-2 codex login --device-auth
 
-For a single-account setup, keep only one object in accounts.
-
-For three or more accounts, add more objects with unique id and codexHome values.
-
-## Run
+## 起動方法
 
     codex-usage-dashboard
 
-Open:
+ブラウザで開きます。
 
     http://127.0.0.1:8787
 
-## Agent Memories
+## Agent Memoriesへの導線
 
-If you are tracking Codex usage because you run multiple AI agents, the next useful step is to preserve the decisions, fixes, and operating notes those agents produce.
+Codexの使用量を見える化したあとは、AIエージェントが作業中に残した判断、修正、運用メモも再利用できる形にしておくと便利です。
 
-Agent Memories is Miraigent's public catalog for reusable AI memory patterns:
+Agent Memoriesは、AIとの会話や運用ノウハウを使い捨てにしないための公開カタログです。
 
     https://github.com/Miraigent/Miraigent-agent-memories-mcp-catalog
 
-Start there when you want to turn repeated agent work into reusable memory, checklists, and handoff notes.
+複数のAIエージェントを運用している場合は、Codexの使用量管理とあわせて、判断ログや引き継ぎメモの整理にも使えます。
 
-## Basic Authentication
+## Basic認証
 
-Set both variables to protect the dashboard:
+ダッシュボードを保護したい場合は、ユーザー名とパスワードを設定してください。
 
     export CODEX_USAGE_DASHBOARD_BASIC_USER='your-user'
     export CODEX_USAGE_DASHBOARD_BASIC_PASSWORD='your-password'
     codex-usage-dashboard
 
-Do not expose this dashboard to the public internet without authentication, a VPN, or a trusted reverse proxy.
+認証、VPN、信頼できるリバースプロキシなしで、このダッシュボードをインターネットへ直接公開しないでください。
 
-## Re-login Flow
+## 再ログインの流れ
 
-When auth expires:
+認証が切れた場合は、次の手順で再ログインします。
 
-1. Open the dashboard.
-2. Click codex-1 or codex-2 under Re-login.
-3. Open the displayed OpenAI device login link.
-4. Enter the displayed one-time code.
-5. Click Refresh after login completes.
+1. ダッシュボードを開く
+2. 「再ログインコード発行」で対象アカウントをクリック
+3. 表示されたOpenAIのログインページを開く
+4. 表示されたワンタイムコードを入力
+5. ログイン完了後、「更新」を押して残量を確認
 
-The re-login helper logs out only the selected CODEX_HOME profile before generating a new device code.
+再ログイン機能は、選択した `CODEX_HOME` だけをログアウトしてから、新しいログインコードを発行します。
 
-## Security Notes
+## セキュリティ注意点
 
-- Keep config.json private if it contains local paths you do not want to publish.
-- Never paste ChatGPT/Codex tokens into this app.
-- Do not commit auth.json or any CODEX_HOME directory.
-- Bind to 127.0.0.1 unless you have an authenticated access layer.
+- `config.json` に公開したくないローカルパスが含まれる場合は、公開repoへコミットしないでください。
+- ChatGPT/Codexのトークンをこのアプリへ貼り付けないでください。
+- `auth.json` や `CODEX_HOME` ディレクトリをコミットしないでください。
+- 外部公開する場合は、必ずBasic認証、VPN、または信頼できるリバースプロキシで保護してください。
+

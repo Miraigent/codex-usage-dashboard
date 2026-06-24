@@ -69,21 +69,21 @@ function accountView(account) {
       '<article class="card error-card">',
       '<h2>' + escapeHtml(account.label || account.id) + '</h2>',
       '<p class="meta">取得失敗 / 再ログインが必要です</p>',
-      '<p class="error">' + escapeHtml(account.error || "Unknown error") + '</p>',
+      '<p class="error">' + escapeHtml(account.error || "不明なエラー") + '</p>',
       '</article>',
     ].join("");
   }
 
   const limit = account.rateLimits || {};
-  const plan = account.account?.planType || limit.planType || "plan unknown";
+  const plan = account.account?.planType || limit.planType || "プラン不明";
   const credits = limit.credits
-    ? '<p class="credits">クレジット: ' + escapeHtml(String(limit.credits.balance ?? "0")) + (limit.credits.unlimited ? " / unlimited" : "") + "</p>"
+    ? '<p class="credits">クレジット: ' + escapeHtml(String(limit.credits.balance ?? "0")) + (limit.credits.unlimited ? " / 無制限" : "") + "</p>"
     : "";
 
   return [
     '<article class="card">',
     '<h2>' + escapeHtml(account.label || account.id) + '</h2>',
-    '<p class="meta">' + escapeHtml(plan) + ' / ' + (account.account?.hasEmail ? "account connected" : "email hidden") + '</p>',
+    '<p class="meta">' + escapeHtml(plan) + ' / ' + (account.account?.hasEmail ? "アカウント接続済み" : "メール非表示") + '</p>',
     limitView(windowName(limit.primary, "5時間の使用制限"), limit.primary),
     limitView(windowName(limit.secondary, "週間利用上限"), limit.secondary),
     credits,
@@ -122,7 +122,7 @@ function escapeHtml(value) {
 
 async function load() {
   refreshEl.disabled = true;
-  statusEl.textContent = "Refreshing...";
+  statusEl.textContent = "更新中...";
   try {
     const response = await fetch("api/usage", { cache: "no-store" });
     const data = await response.json();
@@ -171,9 +171,9 @@ async function createLoginCode(account, button) {
     }
     loginResultEl.innerHTML = [
       '<p class="meta">' + escapeHtml(data.label) + ' / ' + escapeHtml(data.generatedAt) + '</p>',
-      '<p><a href="' + escapeHtml(data.url) + '" target="_blank" rel="noreferrer">OpenAI Codex device loginを開く</a></p>',
+      '<p><a href="' + escapeHtml(data.url) + '" target="_blank" rel="noreferrer">OpenAI Codexのログインページを開く</a></p>',
       '<p class="login-code-value">' + escapeHtml(data.code) + '</p>',
-      '<p class="meta">このコードを開いたページに入力してください。完了後、Refreshで残量を確認できます。</p>',
+      '<p class="meta">このコードを開いたページに入力してください。完了後、「更新」で残量を確認できます。</p>',
     ].join("");
   } catch (error) {
     loginResultEl.innerHTML = '<p class="error">取得失敗: ' + escapeHtml(error.message) + "</p>";

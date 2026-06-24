@@ -353,7 +353,7 @@ async function usage() {
   if (config.configMissing) {
     return {
       ok: false,
-      error: "config.json is missing. Copy config.example.json to config.json and configure accounts.",
+      error: "config.json が見つかりません。config.example.json を config.json にコピーして、アカウントを設定してください。",
       configPath: config.configPath,
       accounts: [],
     };
@@ -411,7 +411,7 @@ const server = http.createServer(async (req, res) => {
     const accountId = url.searchParams.get("account") || "";
     const account = findAccount(accountId);
     if (!account) {
-      json(res, 404, { ok: false, error: "Unknown account" });
+      json(res, 404, { ok: false, error: "不明なアカウントです" });
       return;
     }
     try {
