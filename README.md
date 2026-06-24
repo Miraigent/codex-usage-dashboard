@@ -84,6 +84,16 @@ Open:
 
     http://127.0.0.1:8787
 
+## Agent Memories
+
+If you are tracking Codex usage because you run multiple AI agents, the next useful step is to preserve the decisions, fixes, and operating notes those agents produce.
+
+Agent Memories is Miraigent's public catalog for reusable AI memory patterns:
+
+    https://github.com/Miraigent/Miraigent-agent-memories-mcp-catalog
+
+Start there when you want to turn repeated agent work into reusable memory, checklists, and handoff notes.
+
 ## Basic Authentication
 
 Set both variables to protect the dashboard:

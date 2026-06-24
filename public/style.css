@@ -79,6 +79,32 @@ button {
   gap: 16px;
 }
 
+.agent-memories-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 16px;
+}
+
+.agent-memories-panel h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.link-button {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 9px 14px;
+  text-decoration: none;
+}
+
 .login-panel {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -198,4 +224,15 @@ button {
   margin-top: 14px;
   color: var(--muted);
   font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .agent-memories-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .link-button {
+    text-align: center;
+  }
 }
