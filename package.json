@@ -1,0 +1,45 @@
+{
+  "name": "miraigent-codex-usage-dashboard",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Local dashboard for Codex account usage limits across multiple CODEX_HOME profiles.",
+  "type": "commonjs",
+  "bin": {
+    "codex-usage-dashboard": "bin/codex-usage-dashboard"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js && python3 -m py_compile scripts/codex-device-code.py",
+    "pack:dry-run": "npm pack --dry-run"
+  },
+  "files": [
+    "bin/",
+    "public/",
+    "scripts/codex-device-code.py",
+    "scripts/check-accounts.sh",
+    "scripts/login-account.sh",
+    "config.example.json",
+    "server.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miraigent/codex-usage-dashboard.git"
+  },
+  "keywords": [
+    "codex",
+    "openai",
+    "usage",
+    "dashboard",
+    "quota"
+  ],
+  "author": "Miraigent",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

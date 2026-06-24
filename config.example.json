@@ -1,0 +1,19 @@
+{
+  "host": "127.0.0.1",
+  "port": 8787,
+  "refreshSeconds": 60,
+  "accounts": [
+    {
+      "id": "codex-1",
+      "label": "Codex Account 1",
+      "codexCommand": "codex",
+      "codexHome": "/absolute/path/to/.codex-accounts/codex-1"
+    },
+    {
+      "id": "codex-2",
+      "label": "Codex Account 2",
+      "codexCommand": "codex",
+      "codexHome": "/absolute/path/to/.codex-accounts/codex-2"
+    }
+  ]
+}

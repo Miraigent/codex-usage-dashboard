@@ -1,0 +1,9 @@
+config.json
+node_modules/
+npm-debug.log*
+scripts/__pycache__/
+*.pyc
+.DS_Store
+.env
+*.env
+*.tgz

@@ -1,0 +1,11 @@
+config.json
+node_modules/
+npm-debug.log*
+*.tgz
+
+# Python/cache
+__pycache__/
+*.pyc
+
+# Local deployment helpers
+scripts/install-nginx-*.sh
